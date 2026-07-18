@@ -45,6 +45,7 @@ html {
 
 html,
 body {
+  overflow-x: hidden;
   overflow-x: clip;
 }
 
@@ -118,6 +119,7 @@ a {
 }
 
 .section {
+  padding: 88px 0;
   padding: clamp(72px, 9vw, 104px) 0;
 }
 
@@ -147,6 +149,7 @@ a {
 }
 
 .section-title {
+  font-size: 2.6rem;
   font-size: clamp(2rem, 4.5vw, 3.25rem);
   font-weight: 800;
   margin-bottom: 18px;
@@ -478,6 +481,7 @@ body.menu-open {
 }
 
 .hero-title {
+  font-size: 3.6rem;
   font-size: clamp(2.6rem, 6.4vw, 4.9rem);
   font-weight: 800;
   line-height: 1.04;
@@ -542,11 +546,9 @@ body.menu-open {
   background: var(--ink);
   color: var(--bg);
   padding: 15px 0;
-  width: 104vw;
-  margin-left: -2vw;
-  transform: rotate(-1.2deg);
+  width: 100%;
+  transform: rotate(-1.2deg) scale(1.04);
   overflow: hidden;
-  border-block: 2px solid var(--ink);
 }
 
 .marquee-track {
@@ -708,6 +710,152 @@ body.menu-open {
 
 .servicio-link:hover i {
   transform: translateX(4px);
+}
+
+.servicio-card--software {
+  grid-column: 1 / -1;
+  background: var(--accent);
+  box-shadow: 7px 7px 0 var(--ink);
+}
+
+.servicio-card--software h3 {
+  color: #FFFFFF;
+}
+
+.servicio-card--software p {
+  color: #E7E9FF;
+  max-width: 720px;
+}
+
+.servicio-card--software .servicio-num {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.servicio-card--software .card-icon {
+  background: var(--amber);
+}
+
+.servicio-card--software .servicio-tags li {
+  background: transparent;
+  border-color: rgba(255, 255, 255, 0.6);
+  color: #FFFFFF;
+}
+
+/* =============================================
+   SOFTWARE A MEDIDA
+   ============================================= */
+.software-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 26px;
+  margin-bottom: 56px;
+}
+
+.software-card .card-icon {
+  background: var(--accent);
+  color: #FFFFFF;
+}
+
+.software-extra {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 26px;
+  margin-bottom: 48px;
+}
+
+.software-panel {
+  background: var(--surface);
+  border: var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md);
+  padding: 30px;
+}
+
+.software-panel h3 {
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+}
+
+.flow--light {
+  margin: 0;
+}
+
+.flow--light .flow-step {
+  background: var(--bg);
+  color: var(--ink);
+  border-color: var(--ink);
+  box-shadow: 4px 4px 0 var(--accent);
+}
+
+.flow--light .flow-step::before {
+  color: var(--accent-dark);
+}
+
+.flow--light .flow-step:not(:last-child)::after {
+  color: var(--accent-dark);
+}
+
+.software-include {
+  list-style: none;
+  display: grid;
+  gap: 14px;
+}
+
+.software-include li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 0.97rem;
+  color: var(--ink-soft);
+}
+
+.software-include li strong {
+  color: var(--ink);
+}
+
+.software-include i {
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  display: grid;
+  place-items: center;
+  font-size: 0.7rem;
+  color: var(--ink);
+  background: var(--amber);
+  border: 2px solid var(--ink);
+  border-radius: 8px;
+  margin-top: 2px;
+}
+
+.tech-strip {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 48px;
+}
+
+.tech-strip-label {
+  list-style: none;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.95rem;
+  margin-right: 8px;
+}
+
+.tech-strip li:not(.tech-strip-label) {
+  list-style: none;
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 6px 13px;
+  background: var(--surface);
+  border: 1.5px solid var(--ink);
+  border-radius: 999px;
+  box-shadow: 2px 2px 0 var(--ink);
+}
+
+.software-cta {
+  text-align: center;
 }
 
 /* =============================================
@@ -885,6 +1033,7 @@ body.menu-open {
 
 .stat-value {
   font-family: var(--font-display);
+  font-size: 2.6rem;
   font-size: clamp(2.2rem, 4vw, 3rem);
   font-weight: 800;
   color: var(--accent);
@@ -1058,6 +1207,7 @@ body.menu-open {
   border: var(--border);
   border-radius: 22px;
   box-shadow: var(--shadow-xl);
+  padding: 56px 32px;
   padding: clamp(48px, 6vw, 76px) clamp(24px, 5vw, 64px);
   text-align: center;
   transform: rotate(-0.6deg);
@@ -1078,6 +1228,7 @@ body.menu-open {
 }
 
 .cta-panel h2 {
+  font-size: 2.4rem;
   font-size: clamp(1.9rem, 4vw, 3rem);
   font-weight: 800;
   color: #FFFFFF;
@@ -1289,8 +1440,13 @@ body.menu-open {
    ============================================= */
 @media (max-width: 1024px) {
   .servicios-grid,
-  .automatiza-grid {
+  .automatiza-grid,
+  .software-grid {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  .software-extra {
+    grid-template-columns: 1fr;
   }
 
   .propuesta-grid {
@@ -1320,17 +1476,7 @@ body.menu-open {
   }
 }
 
-@media (max-width: 900px) {
-  .sticker {
-    display: none;
-  }
-}
-
-@media (max-width: 768px) {
-  html {
-    scroll-padding-top: 84px;
-  }
-
+@media (max-width: 1024px) {
   .nav-toggle {
     display: flex;
   }
@@ -1372,6 +1518,18 @@ body.menu-open {
     width: 100%;
     justify-content: center;
   }
+}
+
+@media (max-width: 900px) {
+  .sticker {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  html {
+    scroll-padding-top: 84px;
+  }
 
   .hero {
     padding: 140px 0 80px;
@@ -1393,6 +1551,7 @@ body.menu-open {
   .propuesta-grid,
   .servicios-grid,
   .automatiza-grid,
+  .software-grid,
   .por-que-grid {
     grid-template-columns: 1fr;
   }
