@@ -1,6 +1,6 @@
 /**
  * Vision Digital - Landing Page
- * Scroll animations, sticky nav, counters, mobile menu, parallax, progress bar
+ * Sticky nav, scroll progress, reveal animations, counters, mobile menu
  */
 (function () {
   'use strict';
@@ -13,12 +13,13 @@
   var navLinks = document.getElementById('navLinks');
   var navLinkItems = document.querySelectorAll('.nav-link');
   var statNumbers = document.querySelectorAll('.stat-number');
+
   var scrollProgress = document.createElement('div');
   scrollProgress.className = 'scroll-progress';
   document.body.appendChild(scrollProgress);
 
   /* =============================================
-     UTILITY FUNCTIONS
+     UTILITIES
      ============================================= */
   function throttle(fn, delay) {
     var last = 0;
@@ -35,9 +36,8 @@
      SCROLL PROGRESS BAR
      ============================================= */
   function updateProgressBar() {
-    var scrollTop = window.scrollY;
     var docHeight = document.documentElement.scrollHeight - window.innerHeight;
-    var progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+    var progress = docHeight > 0 ? (window.scrollY / docHeight) * 100 : 0;
     scrollProgress.style.width = progress + '%';
   }
 
@@ -45,6 +45,7 @@
      NAVBAR SCROLL EFFECT
      ============================================= */
   function handleNavScroll() {
+    if (!navbar) return;
     if (window.scrollY > 50) {
       navbar.classList.add('scrolled');
     } else {
@@ -53,17 +54,16 @@
   }
 
   /* =============================================
-     ACTIVE NAV LINK BASED ON SCROLL
+     ACTIVE NAV LINK
      ============================================= */
   function updateActiveNav() {
-    var scrollPos = window.scrollY + 120;
+    var scrollPos = window.scrollY + 130;
     var sections = document.querySelectorAll('section[id]');
     var currentId = '';
 
     sections.forEach(function (section) {
-      var sectionTop = section.offsetTop;
-      var sectionHeight = section.offsetHeight;
-      if (scrollPos >= sectionTop && scrollPos < sectionTop + sectionHeight) {
+      var top = section.offsetTop;
+      if (scrollPos >= top && scrollPos < top + section.offsetHeight) {
         currentId = section.getAttribute('id');
       }
     });
@@ -79,58 +79,73 @@
   /* =============================================
      MOBILE MENU
      ============================================= */
-  function toggleMobileMenu() {
-    navToggle.classList.toggle('active');
-    navLinks.classList.toggle('active');
-    document.body.classList.toggle('menu-open');
+  function setMenuState(open) {
+    if (!navToggle || !navLinks) return;
+    navToggle.classList.toggle('active', open);
+    navLinks.classList.toggle('active', open);
+    document.body.classList.toggle('menu-open', open);
+    navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    navToggle.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
   }
 
-  function closeMobileMenu() {
-    navToggle.classList.remove('active');
-    navLinks.classList.remove('active');
-    document.body.classList.remove('menu-open');
-  }
-
-  navToggle.addEventListener('click', toggleMobileMenu);
-
-  navLinkItems.forEach(function (link) {
-    link.addEventListener('click', function () {
-      closeMobileMenu();
+  if (navToggle && navLinks) {
+    navToggle.addEventListener('click', function () {
+      setMenuState(!navLinks.classList.contains('active'));
     });
-  });
 
-  document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape' && navLinks.classList.contains('active')) {
-      closeMobileMenu();
-    }
-  });
+    navLinks.addEventListener('click', function (e) {
+      if (e.target.closest('a')) {
+        setMenuState(false);
+      }
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && navLinks.classList.contains('active')) {
+        setMenuState(false);
+        navToggle.focus();
+      }
+    });
+  }
 
   /* =============================================
-     SCROLL REVEAL (Intersection Observer)
+     SCROLL REVEAL
      ============================================= */
+  var REVEAL_CLASSES = ['reveal', 'reveal-left', 'reveal-right', 'reveal-scale'];
+
+  function getDelayMs(el) {
+    var raw = getComputedStyle(el).getPropertyValue('--delay').trim();
+    var value = parseFloat(raw);
+    if (isNaN(value)) return 0;
+    return raw.indexOf('ms') > -1 ? value : value * 1000;
+  }
+
+  function cleanupReveal(el) {
+    REVEAL_CLASSES.forEach(function (cls) {
+      el.classList.remove(cls);
+    });
+    el.classList.remove('visible');
+    el.style.willChange = 'auto';
+  }
+
   var revealObserver = new IntersectionObserver(
     function (entries) {
       entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          var el = entry.target;
-          var delay = getComputedStyle(el).getPropertyValue('--delay').trim();
-          if (delay) {
-            el.style.transitionDelay = delay;
-          }
-          el.classList.add('visible');
-          revealObserver.unobserve(el);
-        }
+        if (!entry.isIntersecting) return;
+        var el = entry.target;
+        el.classList.add('visible');
+        revealObserver.unobserve(el);
+        setTimeout(function () {
+          cleanupReveal(el);
+        }, 800 + getDelayMs(el));
       });
     },
     {
-      threshold: 0.10,
+      threshold: 0.1,
       rootMargin: '0px 0px -50px 0px'
     }
   );
 
-  // Observe all reveal elements (including variants)
-  var allReveal = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale');
-  allReveal.forEach(function (el) {
+  document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale').forEach(function (el) {
     revealObserver.observe(el);
   });
 
@@ -143,20 +158,14 @@
       if (!target || el.dataset.animated === 'true') return;
       el.dataset.animated = 'true';
 
-      var duration = 2200;
+      var duration = 2000;
       var startTime = null;
 
       function step(timestamp) {
         if (!startTime) startTime = timestamp;
-        var elapsed = timestamp - startTime;
-        var progress = Math.min(elapsed / duration, 1);
-
-        // Ease out quart
+        var progress = Math.min((timestamp - startTime) / duration, 1);
         var eased = 1 - Math.pow(1 - progress, 4);
-        var current = Math.floor(eased * target);
-
-        el.textContent = current;
-
+        el.textContent = Math.floor(eased * target);
         if (progress < 1) {
           requestAnimationFrame(step);
         } else {
@@ -169,7 +178,7 @@
   }
 
   var statsSection = document.querySelector('.por-que-stats');
-  if (statsSection) {
+  if (statsSection && statNumbers.length) {
     var statsObserver = new IntersectionObserver(
       function (entries) {
         entries.forEach(function (entry) {
@@ -179,111 +188,22 @@
           }
         });
       },
-      { threshold: 0.4 }
+      { threshold: 0.35 }
     );
     statsObserver.observe(statsSection);
   }
 
   /* =============================================
-     HERO PARALLAX
-     ============================================= */
-  var heroGlow1 = document.querySelector('.hero-glow--1');
-  var heroGlow2 = document.querySelector('.hero-glow--2');
-  var heroRing1 = document.querySelector('.hero-ring--1');
-  var heroRing2 = document.querySelector('.hero-ring--2');
-
-  function updateParallax() {
-    var scrollY = window.scrollY;
-    if (scrollY > window.innerHeight) return;
-
-    var factor = scrollY * 0.15;
-    if (heroGlow1) heroGlow1.style.transform = 'translateY(' + factor + 'px)';
-    if (heroGlow2) heroGlow2.style.transform = 'translateY(' + (-factor * 0.6) + 'px)';
-    if (heroRing1) heroRing1.style.transform = 'translateY(' + (factor * 0.4) + 'px)';
-    if (heroRing2) heroRing2.style.transform = 'translateY(' + (-factor * 0.3) + 'px)';
-  }
-
-  /* =============================================
-     CARD TILT ON MOUSE MOVE (Desktop only)
-     ============================================= */
-  function initCardTilt() {
-    if (window.innerWidth < 768) return;
-
-    var cards = document.querySelectorAll('.propuesta-card, .servicio-card, .por-que-card');
-
-    cards.forEach(function (card) {
-      card.addEventListener('mousemove', function (e) {
-        var rect = card.getBoundingClientRect();
-        var x = e.clientX - rect.left;
-        var y = e.clientY - rect.top;
-        var centerX = rect.width / 2;
-        var centerY = rect.height / 2;
-        var rotateX = ((y - centerY) / centerY) * -5;
-        var rotateY = ((x - centerX) / centerX) * 5;
-
-        card.style.transform = 'perspective(600px) rotateX(' + rotateX.toFixed(2) + 'deg) rotateY(' + rotateY.toFixed(2) + 'deg) translateY(-4px)';
-      });
-
-      card.addEventListener('mouseleave', function () {
-        card.style.transform = 'perspective(600px) rotateX(0deg) rotateY(0deg) translateY(0px)';
-      });
-    });
-  }
-
-  /* =============================================
-     PARTICLES GENERATOR FOR SECTIONS
-     ============================================= */
-  function generateParticles() {
-    var containers = document.querySelectorAll('.particles-bg');
-    containers.forEach(function (container) {
-      var fragment = document.createDocumentFragment();
-      for (var i = 0; i < 15; i++) {
-        var span = document.createElement('span');
-        span.style.left = (Math.random() * 95) + '%';
-        span.style.animationDelay = (Math.random() * 8) + 's';
-        span.style.animationDuration = (6 + Math.random() * 8) + 's';
-        span.style.width = (2 + Math.random() * 3) + 'px';
-        span.style.height = span.style.width;
-        fragment.appendChild(span);
-      }
-      container.appendChild(fragment);
-    });
-  }
-
-  /* =============================================
-     SCROLL EVENT LISTENERS
+     SCROLL LISTENER + INITIAL STATE
      ============================================= */
   window.addEventListener('scroll', throttle(function () {
     handleNavScroll();
     updateActiveNav();
     updateProgressBar();
-    updateParallax();
   }, 20), { passive: true });
 
-  /* =============================================
-     INITIAL STATE
-     ============================================= */
   handleNavScroll();
   updateActiveNav();
   updateProgressBar();
-  updateParallax();
-  initCardTilt();
-  generateParticles();
-
-  /* =============================================
-     RESIZE HANDLER
-     ============================================= */
-  var resizeTimeout;
-  window.addEventListener('resize', function () {
-    clearTimeout(resizeTimeout);
-    resizeTimeout = setTimeout(function () {
-      initCardTilt();
-    }, 200);
-  });
-
-  // Prevent body scroll when mobile menu is open
-  var style = document.createElement('style');
-  style.textContent = '.menu-open { overflow: hidden; }';
-  document.head.appendChild(style);
 
 })();
