@@ -11,6 +11,7 @@ Stack: HTML + CSS + JS vanilla, sin build ni dependencias locales (Google Fonts 
   - Fondo global fijo con malla (grid 74px enmascarada) y auroras radiales; secciones separadas por hairlines.
 - **Hero asimétrico**: copy a la izquierda + panel tipo consola (`núcleo · visión digital`) con KPIs, gráfico de barras animado y log de eventos. Badge de estado con punto pulsante. Stats con divisores.
 - **Servicios en bento**: grilla de 6 columnas; 10 tarjetas, la 09 (Automatización) destacada en cian y la 10 (Software) a ancho completo.
+- **Nuevo bloque "Nuestros desarrollos"** dentro de `#software`: 2 tarjetas enlazadas a productos propios en producción — `visionchat.lat` (CRM de mensajería con WhatsApp Cloud API e IA) y `especialidadesclinicas.lat` (gestión académica para programas de especialización). Incluyen chip de dominio con punto de estado, tags y link externo.
 - Secciones numeradas con eyebrow mono (`01 · Enfoque` … `08 · Siguiente paso`): Enfoque, Servicios, Automatización, Software, Proceso, Diferencial, FAQ, CTA.
 - **Contenido ampliado**: nueva FAQ sobre propiedad del software y los datos; nota de entregas por etapa en el panel de desarrollo; copy revisado sin duplicados.
 - Navbar mínima sin blur (el backdrop-filter generaba una costura visible): fondo casi opaco, link activo con IntersectionObserver, CTA duplicada adaptativa (desktop fuera del menú, mobile dentro).
@@ -29,17 +30,17 @@ Stack: HTML + CSS + JS vanilla, sin build ni dependencias locales (Google Fonts 
 - `CNAME` contiene `visiondigital.lat` (sin `https://`, sin `www`, con salto de línea final). Verificado el 2026-11-15: correcto para GitHub Pages.
 - Repo remoto: `https://github.com/camacho2901/vision_digital_web.git`, rama `main`.
 - Deploy = push a `main`; GitHub Pages publica automáticamente.
-- Estado del deploy del rediseño (2026-11-15): commit `85213ae` → build `built`; `http://visiondigital.lat/` responde 200 y sirve `styles.css?v=10` + `main.js?v=6`.
+- Estado del deploy del rediseño (2026-11-15): commit `85213ae` → build `built`; `http://visiondigital.lat/` responde 200 y sirve `styles.css?v=11` + `main.js?v=6`.
 - DNS verificado: apex con 4 registros `A` a `185.199.108/109/110/111.153`; `www` como `CNAME` a `camacho2901.github.io`. Correcto.
 - **Incidencia TLS (resuelta en curso):** el certificado de Pages expiró el 2026-11-01 y ACME quedó en estado `bad_authz`. `https_enforced` estaba en `false` y `https://visiondigital.lat/` devolvía `SEC_E_CERT_EXPIRED`. El `CNAME` y el DNS eran correctos; no había registros CAA bloqueando.
   - Acción aplicada el 2026-11-15: se reinició el dominio con la API de Pages (quitar y volver a agregar `visiondigital.lat`). GitHub generó los commits `86b78b9` (Delete CNAME) y `92ddca4` (Create CNAME); el archivo quedó con el dominio correcto.
   - Resultado: el certificado pasó de `bad_authz` a `authorization_pending` y luego a **`approved`**, con vencimiento **2027-02-13**. Se activó **Enforce HTTPS** (`https_enforced: true`).
-  - Verificación final (2026-11-15): `https://visiondigital.lat/` → 200; `www` → 301 al apex; `/robots.txt` y `/sitemap.xml` → 200; HTML sirve `styles.css?v=10` y `main.js?v=6`; build `built`.
+  - Verificación final (2026-11-15): `https://visiondigital.lat/` → 200; `www` → 301 al apex; `/robots.txt` y `/sitemap.xml` → 200; HTML sirve `styles.css?v=11` y `main.js?v=6`; build `built`.
 - Si el certificado vuelve a fallar: revisar CAA en el DNS y repetir el ciclo quitar/agregar dominio.
 
 - Checklist post-deploy:
   1. `curl -I https://visiondigital.lat/` → 200 y `content-type: text/html`.
-  2. Verificar que el HTML servido referencia `css/styles.css?v=10` y `js/main.js?v=6`.
+  2. Verificar que el HTML servido referencia `css/styles.css?v=11` y `js/main.js?v=6`.
   3. Revisar consola del navegador sin errores y que el hero muestre el panel de consola.
   4. Revisar que `https://visiondigital.lat/robots.txt` y `/sitemap.xml` respondan 200.
   5. En GitHub → Settings → Pages: dominio verificado y certificado TLS activo (Enforce HTTPS).
