@@ -29,12 +29,17 @@ Stack: HTML + CSS + JS vanilla, sin build ni dependencias locales (Google Fonts 
 - `CNAME` contiene `visiondigital.lat` (sin `https://`, sin `www`, con salto de línea final). Verificado el 2026-11-15: correcto para GitHub Pages.
 - Repo remoto: `https://github.com/camacho2901/vision_digital_web.git`, rama `main`.
 - Deploy = push a `main`; GitHub Pages publica automáticamente.
+- Estado del deploy del rediseño (2026-11-15): commit `85213ae` → build `built`; `http://visiondigital.lat/` responde 200 y sirve `styles.css?v=10` + `main.js?v=6`.
+- DNS verificado: apex con 4 registros `A` a `185.199.108/109/110/111.153`; `www` como `CNAME` a `camacho2901.github.io`. Correcto.
+- **Incidencia TLS abierta (no es del repo):** el certificado de Pages expiró el 2026-11-01 y ACME quedó en estado `bad_authz` ("hay que empezar de nuevo"); `https_enforced` está en `false` y `https://visiondigital.lat/` devuelve `SEC_E_CERT_EXPIRED`. El `CNAME` y el DNS son correctos.
+  - Solución: GitHub → Settings → Pages → borrar el custom domain, volver a guardar `visiondigital.lat`, esperar la emisión del certificado y activar "Enforce HTTPS".
 - Checklist post-deploy:
   1. `curl -I https://visiondigital.lat/` → 200 y `content-type: text/html`.
   2. Verificar que el HTML servido referencia `css/styles.css?v=10` y `js/main.js?v=6`.
   3. Revisar consola del navegador sin errores y que el hero muestre el panel de consola.
   4. Revisar que `https://visiondigital.lat/robots.txt` y `/sitemap.xml` respondan 200.
   5. En GitHub → Settings → Pages: dominio verificado y certificado TLS activo (Enforce HTTPS).
+
 - DNS: registro `A` del apex a las IPs de GitHub Pages (185.199.108-111.153) o `ALIAS`/`ANAME`; `www` como `CNAME` a `camacho2901.github.io`. El CNAME del repo solo declara el dominio, no configura DNS.
 
 
