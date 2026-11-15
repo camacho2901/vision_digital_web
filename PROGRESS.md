@@ -55,7 +55,7 @@ Stack: HTML + CSS + JS vanilla, sin build ni dependencias locales (Google Fonts 
 - Breakpoint del menú móvil en 1024px (6 links + CTA no caben en tablets/laptops chicas).
 - Ubicación pública: solo "Bolivia" (sin Oruro).
 - Voseo consistente ("agendá", "escribinos").
-- Contacto solo por WhatsApp (+591 69877877 / +591 69597358), sin backend.
+- Contacto solo por WhatsApp, con un único número oficial: **+591 77655674**. Sin backend.
 - Stats: +40 empresas, 3 años, 95% satisfacción, 7 departamentos.
 - El contenido se oculta solo si hay JS activo; `<noscript>` fuerza la visibilidad.
 
