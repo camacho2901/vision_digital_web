@@ -1,26 +1,26 @@
 /**
- * Vision Digital - Landing Page
- * Sticky nav, scroll progress, reveal animations, counters, mobile menu
+ * Visión Digital — Landing Page
+ * Navbar, progreso de scroll, menú móvil, reveal, contadores y spotlight.
  */
 (function () {
   'use strict';
 
-  /* =============================================
-     DOM REFERENCES
-     ============================================= */
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
   var navbar = document.getElementById('navbar');
   var navToggle = document.getElementById('navToggle');
   var navLinks = document.getElementById('navLinks');
-  var navLinkItems = document.querySelectorAll('.nav-link');
+  var navLinkItems = document.querySelectorAll('.nav-link[href^="#"]');
   var statNumbers = document.querySelectorAll('.stat-number');
 
+  /* =============================================
+     BARRA DE PROGRESO
+     ============================================= */
   var scrollProgress = document.createElement('div');
   scrollProgress.className = 'scroll-progress';
+  scrollProgress.setAttribute('aria-hidden', 'true');
   document.body.appendChild(scrollProgress);
 
-  /* =============================================
-     UTILITIES
-     ============================================= */
   function throttle(fn, delay) {
     var last = 0;
     return function () {
@@ -32,9 +32,6 @@
     };
   }
 
-  /* =============================================
-     SCROLL PROGRESS BAR
-     ============================================= */
   function updateProgressBar() {
     var docHeight = document.documentElement.scrollHeight - window.innerHeight;
     var progress = docHeight > 0 ? (window.scrollY / docHeight) * 100 : 0;
@@ -42,42 +39,59 @@
   }
 
   /* =============================================
-     NAVBAR SCROLL EFFECT
+     NAVBAR
      ============================================= */
   function handleNavScroll() {
     if (!navbar) return;
-    if (window.scrollY > 50) {
-      navbar.classList.add('scrolled');
-    } else {
-      navbar.classList.remove('scrolled');
-    }
+    navbar.classList.toggle('scrolled', window.scrollY > 24);
   }
 
   /* =============================================
-     ACTIVE NAV LINK
+     LINK ACTIVO
      ============================================= */
-  function updateActiveNav() {
-    var scrollPos = window.scrollY + 130;
-    var sections = document.querySelectorAll('section[id]');
-    var currentId = '';
+  var sections = Array.prototype.slice.call(document.querySelectorAll('main section[id]'));
+  var visibleSections = new Set();
+
+  function applyActiveLink(id) {
+    navLinkItems.forEach(function (link) {
+      var isActive = link.getAttribute('href') === '#' + id;
+      link.classList.toggle('active', isActive);
+      if (isActive) {
+        link.setAttribute('aria-current', 'location');
+      } else {
+        link.removeAttribute('aria-current');
+      }
+    });
+  }
+
+  if ('IntersectionObserver' in window && sections.length) {
+    var sectionObserver = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            visibleSections.add(entry.target.id);
+          } else {
+            visibleSections.delete(entry.target.id);
+          }
+        });
+
+        for (var i = 0; i < sections.length; i++) {
+          if (visibleSections.has(sections[i].id)) {
+            applyActiveLink(sections[i].id);
+            return;
+          }
+        }
+      },
+      { rootMargin: '-20% 0px -65% 0px', threshold: 0 }
+    );
 
     sections.forEach(function (section) {
-      var top = section.offsetTop;
-      if (scrollPos >= top && scrollPos < top + section.offsetHeight) {
-        currentId = section.getAttribute('id');
-      }
-    });
-
-    navLinkItems.forEach(function (link) {
-      link.classList.remove('active');
-      if (link.getAttribute('href') === '#' + currentId) {
-        link.classList.add('active');
-      }
+      sectionObserver.observe(section);
     });
   }
 
   /* =============================================
-     MOBILE MENU
+     MENÚ MÓVIL
      ============================================= */
   function setMenuState(open) {
     if (!navToggle || !navLinks) return;
@@ -94,9 +108,7 @@
     });
 
     navLinks.addEventListener('click', function (e) {
-      if (e.target.closest('a')) {
-        setMenuState(false);
-      }
+      if (e.target.closest('a')) setMenuState(false);
     });
 
     document.addEventListener('keydown', function (e) {
@@ -105,15 +117,24 @@
         navToggle.focus();
       }
     });
+
+    window.addEventListener('resize', function () {
+      if (window.innerWidth > 1024 && navLinks.classList.contains('active')) {
+        setMenuState(false);
+      }
+    });
   }
 
   /* =============================================
-     SCROLL REVEAL
+     REVEAL
      ============================================= */
+  var REVEAL_SELECTOR = '.reveal, .reveal-left, .reveal-right, .reveal-scale';
   var REVEAL_CLASSES = ['reveal', 'reveal-left', 'reveal-right', 'reveal-scale'];
+  var revealItems = document.querySelectorAll(REVEAL_SELECTOR);
 
   function getDelayMs(el) {
     var raw = getComputedStyle(el).getPropertyValue('--delay').trim();
+    if (!raw) return 0;
     var value = parseFloat(raw);
     if (isNaN(value)) return 0;
     return raw.indexOf('ms') > -1 ? value : value * 1000;
@@ -127,38 +148,56 @@
     el.style.willChange = 'auto';
   }
 
-  var revealObserver = new IntersectionObserver(
-    function (entries) {
-      entries.forEach(function (entry) {
-        if (!entry.isIntersecting) return;
-        var el = entry.target;
-        el.classList.add('visible');
-        revealObserver.unobserve(el);
-        setTimeout(function () {
-          cleanupReveal(el);
-        }, 800 + getDelayMs(el));
-      });
-    },
-    {
-      threshold: 0.1,
-      rootMargin: '0px 0px -50px 0px'
-    }
-  );
+  if (reduceMotion || !('IntersectionObserver' in window)) {
+    revealItems.forEach(cleanupReveal);
+  } else {
+    var revealObserver = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          var el = entry.target;
+          el.classList.add('visible');
+          revealObserver.unobserve(el);
+          window.setTimeout(function () {
+            cleanupReveal(el);
+          }, 700 + getDelayMs(el));
+        });
+      },
+      { threshold: 0.08, rootMargin: '0px 0px -40px 0px' }
+    );
 
-  document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale').forEach(function (el) {
-    revealObserver.observe(el);
-  });
+    revealItems.forEach(function (el) {
+      revealObserver.observe(el);
+    });
+
+    /* Red de seguridad: si el observer no dispara, revela lo que ya está a la vista. */
+    window.addEventListener('load', function () {
+      window.setTimeout(function () {
+        document.querySelectorAll(REVEAL_SELECTOR).forEach(function (el) {
+          if (el.getBoundingClientRect().top < window.innerHeight * 1.2) {
+            cleanupReveal(el);
+          }
+        });
+      }, 1500);
+    });
+  }
 
   /* =============================================
-     COUNTER ANIMATION
+     CONTADORES
      ============================================= */
   function animateCounters() {
     statNumbers.forEach(function (el) {
+      if (el.dataset.animated === 'true') return;
       var target = parseInt(el.getAttribute('data-count'), 10);
-      if (!target || el.dataset.animated === 'true') return;
+      if (isNaN(target)) return;
       el.dataset.animated = 'true';
 
-      var duration = 2000;
+      if (reduceMotion) {
+        el.textContent = target;
+        return;
+      }
+
+      var duration = 1600;
       var startTime = null;
 
       function step(timestamp) {
@@ -177,33 +216,50 @@
     });
   }
 
-  var statsSection = document.querySelector('.por-que-stats');
+  var statsSection = document.querySelector('.stats-bar');
   if (statsSection && statNumbers.length) {
-    var statsObserver = new IntersectionObserver(
-      function (entries) {
-        entries.forEach(function (entry) {
-          if (entry.isIntersecting) {
-            animateCounters();
-            statsObserver.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.35 }
-    );
-    statsObserver.observe(statsSection);
+    if ('IntersectionObserver' in window) {
+      var statsObserver = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              animateCounters();
+              statsObserver.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.3 }
+      );
+      statsObserver.observe(statsSection);
+    } else {
+      animateCounters();
+    }
   }
 
   /* =============================================
-     SCROLL LISTENER + INITIAL STATE
+     SPOTLIGHT EN TARJETAS
+     ============================================= */
+  if (!reduceMotion && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    document.querySelectorAll('.card').forEach(function (card) {
+      card.addEventListener('pointermove', function (e) {
+        var rect = card.getBoundingClientRect();
+        card.style.setProperty('--mx', (e.clientX - rect.left) + 'px');
+        card.style.setProperty('--my', (e.clientY - rect.top) + 'px');
+      });
+    });
+  }
+
+  /* =============================================
+     INIT
      ============================================= */
   window.addEventListener('scroll', throttle(function () {
     handleNavScroll();
-    updateActiveNav();
     updateProgressBar();
-  }, 20), { passive: true });
+  }, 16), { passive: true });
+
+  var yearEl = document.getElementById('year');
+  if (yearEl) yearEl.textContent = new Date().getFullYear();
 
   handleNavScroll();
-  updateActiveNav();
   updateProgressBar();
-
 })();
