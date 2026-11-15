@@ -31,8 +31,12 @@ Stack: HTML + CSS + JS vanilla, sin build ni dependencias locales (Google Fonts 
 - Deploy = push a `main`; GitHub Pages publica automáticamente.
 - Estado del deploy del rediseño (2026-11-15): commit `85213ae` → build `built`; `http://visiondigital.lat/` responde 200 y sirve `styles.css?v=10` + `main.js?v=6`.
 - DNS verificado: apex con 4 registros `A` a `185.199.108/109/110/111.153`; `www` como `CNAME` a `camacho2901.github.io`. Correcto.
-- **Incidencia TLS abierta (no es del repo):** el certificado de Pages expiró el 2026-11-01 y ACME quedó en estado `bad_authz` ("hay que empezar de nuevo"); `https_enforced` está en `false` y `https://visiondigital.lat/` devuelve `SEC_E_CERT_EXPIRED`. El `CNAME` y el DNS son correctos.
-  - Solución: GitHub → Settings → Pages → borrar el custom domain, volver a guardar `visiondigital.lat`, esperar la emisión del certificado y activar "Enforce HTTPS".
+- **Incidencia TLS (resuelta en curso):** el certificado de Pages expiró el 2026-11-01 y ACME quedó en estado `bad_authz`. `https_enforced` estaba en `false` y `https://visiondigital.lat/` devolvía `SEC_E_CERT_EXPIRED`. El `CNAME` y el DNS eran correctos; no había registros CAA bloqueando.
+  - Acción aplicada el 2026-11-15: se reinició el dominio con la API de Pages (quitar y volver a agregar `visiondigital.lat`). GitHub generó los commits `86b78b9` (Delete CNAME) y `92ddca4` (Create CNAME); el archivo quedó con el dominio correcto.
+  - Resultado: el certificado pasó de `bad_authz` a `authorization_pending` y luego a **`approved`**, con vencimiento **2027-02-13**. Se activó **Enforce HTTPS** (`https_enforced: true`).
+  - Verificación final (2026-11-15): `https://visiondigital.lat/` → 200; `www` → 301 al apex; `/robots.txt` y `/sitemap.xml` → 200; HTML sirve `styles.css?v=10` y `main.js?v=6`; build `built`.
+- Si el certificado vuelve a fallar: revisar CAA en el DNS y repetir el ciclo quitar/agregar dominio.
+
 - Checklist post-deploy:
   1. `curl -I https://visiondigital.lat/` → 200 y `content-type: text/html`.
   2. Verificar que el HTML servido referencia `css/styles.css?v=10` y `js/main.js?v=6`.
