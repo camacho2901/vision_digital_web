@@ -1,6 +1,6 @@
 # PROGRESS — Visión Digital (web)
 
-Landing page estática de Visión Digital (agencia de marketing digital e IA, Bolivia).
+Landing page estática de Visión Digital (agencia de marketing digital e IA, Latinoamérica).
 Hosting: GitHub Pages con dominio `visiondigital.lat` (CNAME).
 Stack: HTML + CSS + JS vanilla, sin build ni dependencias locales (Google Fonts y Font Awesome vía CDN).
 
@@ -12,6 +12,7 @@ Stack: HTML + CSS + JS vanilla, sin build ni dependencias locales (Google Fonts 
 - **Hero asimétrico**: copy a la izquierda + panel tipo consola (`núcleo · visión digital`) con KPIs, gráfico de barras animado y log de eventos. Badge de estado con punto pulsante. Stats con divisores.
 - **Servicios en bento**: grilla de 6 columnas; 10 tarjetas, la 09 (Automatización) destacada en cian y la 10 (Software) a ancho completo. La 08 pasó de "Talleres de IA" a **"Verificación de Portafolio Comercial en Meta"** (2026-11-15).
 - **Copy en castellano neutro latinoamericano (2026-11-15)**: eliminado todo el voseo y modismos rioplatenses (antes "Agendá", "Escribinos", "vendés", "por vos", "letra chica", "armamos"). Segunda persona con tuteo en todo el sitio.
+- **Reposicionamiento geográfico (2026-11-15)**: todo el sitio pasó de "Bolivia" a **Latinoamérica** (title, metas, JSON-LD, hero, SEO local, diferencial, FAQ, CTA y footer). Se eliminó `addressCountry: "BO"` del JSON-LD y el stat "Departamentos con presencia" pasó a "Países con presencia".
 - **Nuevo bloque "Nuestros desarrollos"** dentro de `#software`: 2 tarjetas enlazadas a productos propios en producción — `visionchat.lat` (CRM de mensajería con WhatsApp Cloud API e IA) y `especialidadesclinicas.lat` (gestión académica para programas de especialización). Incluyen chip de dominio con punto de estado, tags y link externo.
 - **Nueva sección "03 · Meta Tech Provider" (2026-11-15)**: declara el respaldo técnico de Meta, con 3 tarjetas (integraciones oficiales, verificación con criterio técnico, soporte por canal técnico) y una comparativa en dos columnas: "Con Visión Digital" vs "Una agencia sin respaldo técnico" (variante `.checklist--muted`). Enlace añadido al footer y `award` en el JSON-LD. No se agregó al navbar para no romper el breakpoint de 1024px.
 - Secciones numeradas con eyebrow mono (`01 · Enfoque` … `09 · Siguiente paso`): Enfoque, Servicios, Meta Tech Provider, Automatización, Software, Proceso, Diferencial, FAQ, CTA.
@@ -56,11 +57,11 @@ Stack: HTML + CSS + JS vanilla, sin build ni dependencias locales (Google Fonts 
 - Se eliminó `backdrop-filter` del navbar: sobre un fondo casi plano generaba una línea/artefacto visible en el borde. Se mantiene blur en la consola y el menú móvil.
 - Hero en 2 columnas con título a 56px máx.: a 65px la frase "Marketing que vende." no cabía y el titular quedaba en 4 líneas.
 - Breakpoint del menú móvil en 1024px (6 links + CTA no caben en tablets/laptops chicas).
-- Ubicación pública: solo "Bolivia" (sin Oruro).
+- Cobertura pública: **Latinoamérica** (2026-11-15; antes solo "Bolivia", sin Oruro). El número de contacto sigue siendo boliviano (+591 77655674).
 - Castellano neutro latinoamericano: segunda persona con tuteo ("tú"), sin voseo ni modismos rioplatenses.
 - Tarjeta 08 = Verificación de Portafolio Comercial en Meta (reemplaza Talleres de IA, que no tenía demanda comprobada y competía con el resto de la oferta).
 - Contacto solo por WhatsApp, con un único número oficial: **+591 77655674**. Sin backend.
-- Stats: +40 empresas, 3 años, 95% satisfacción, 7 departamentos.
+- Stats: +40 empresas, 3 años, 95% satisfacción, 7 países.
 - El contenido se oculta solo si hay JS activo; `<noscript>` fuerza la visibilidad.
 
 ## Archivos
