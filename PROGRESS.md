@@ -20,10 +20,9 @@ Stack: HTML + CSS + JS vanilla, sin build ni dependencias locales (Google Fonts 
 - JS: barra de progreso, navbar sticky, link activo (`aria-current="location"`), menú móvil accesible (Escape, cierre al click, reset en resize), reveal con limpieza de clases y **red de seguridad** (revela lo visible a los 1.5 s), contadores animados y spotlight radial en tarjetas (solo puntero fino).
 - Microinteracciones: hover lift en tarjetas, glow en iconos, marquee pausa al hover, acordeón FAQ con `+` → `×`.
 - **SEO/a11y**: canonical, OG + Twitter card, JSON-LD con `serviceType`, `robots.txt` y `sitemap.xml` nuevos, skip-link, focus visible, `prefers-reduced-motion`, `<noscript>`.
-- **Lighthouse (build actual)**: Accessibility 100, Best Practices 100, SEO 100.
+- **Lighthouse (2026-11-15, local)**: Accessibility 100, Best Practices 100, SEO 100.
 
 ## Pendientes
-- **Deploy pendiente**: sección Meta Tech Provider + copy en castellano neutro + tarjeta 08 nueva (`styles.css?v=12`). Cambios verificados solo en local.
 - Verificar renderizado en dispositivos reales (iOS Safari, Android Chrome) tras el deploy.
 - Evaluar imágenes reales/portafolio y testimonios verificables (hoy no hay assets ni casos públicos).
 - Si se agrega formulario o analytics: política de privacidad y consentimiento.
@@ -34,6 +33,7 @@ Stack: HTML + CSS + JS vanilla, sin build ni dependencias locales (Google Fonts 
 - Repo remoto: `https://github.com/camacho2901/vision_digital_web.git`, rama `main`.
 - Deploy = push a `main`; GitHub Pages publica automáticamente.
 - Estado del deploy del rediseño (2026-11-15): commit `85213ae` → build `built`; `http://visiondigital.lat/` responde 200 y sirve `styles.css?v=11` + `main.js?v=6`.
+- **Deploy de la sección Meta Tech Provider (2026-11-15)**: commit `0c52644` → build `built`; `https://visiondigital.lat/` responde 200 y sirve `styles.css?v=12` + `main.js?v=6`. Verificado en producción: `#meta` presente ("Somos Meta Tech Provider"), 10 tarjetas de servicio, `.checklist--muted` aplicado, sin errores de consola y sin scroll horizontal.
 - DNS verificado: apex con 4 registros `A` a `185.199.108/109/110/111.153`; `www` como `CNAME` a `camacho2901.github.io`. Correcto.
 - **Incidencia TLS (resuelta en curso):** el certificado de Pages expiró el 2026-11-01 y ACME quedó en estado `bad_authz`. `https_enforced` estaba en `false` y `https://visiondigital.lat/` devolvía `SEC_E_CERT_EXPIRED`. El `CNAME` y el DNS eran correctos; no había registros CAA bloqueando.
   - Acción aplicada el 2026-11-15: se reinició el dominio con la API de Pages (quitar y volver a agregar `visiondigital.lat`). GitHub generó los commits `86b78b9` (Delete CNAME) y `92ddca4` (Create CNAME); el archivo quedó con el dominio correcto.
