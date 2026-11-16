@@ -10,9 +10,11 @@ Stack: HTML + CSS + JS vanilla, sin build ni dependencias locales (Google Fonts 
   - Tipografías: Space Grotesk (display), Inter (cuerpo), JetBrains Mono (labels, métricas, chips).
   - Fondo global fijo con malla (grid 74px enmascarada) y auroras radiales; secciones separadas por hairlines.
 - **Hero asimétrico**: copy a la izquierda + panel tipo consola (`núcleo · visión digital`) con KPIs, gráfico de barras animado y log de eventos. Badge de estado con punto pulsante. Stats con divisores.
-- **Servicios en bento**: grilla de 6 columnas; 10 tarjetas, la 09 (Automatización) destacada en cian y la 10 (Software) a ancho completo.
+- **Servicios en bento**: grilla de 6 columnas; 10 tarjetas, la 09 (Automatización) destacada en cian y la 10 (Software) a ancho completo. La 08 pasó de "Talleres de IA" a **"Verificación de Portafolio Comercial en Meta"** (2026-11-15).
+- **Copy en castellano neutro latinoamericano (2026-11-15)**: eliminado todo el voseo y modismos rioplatenses (antes "Agendá", "Escribinos", "vendés", "por vos", "letra chica", "armamos"). Segunda persona con tuteo en todo el sitio.
 - **Nuevo bloque "Nuestros desarrollos"** dentro de `#software`: 2 tarjetas enlazadas a productos propios en producción — `visionchat.lat` (CRM de mensajería con WhatsApp Cloud API e IA) y `especialidadesclinicas.lat` (gestión académica para programas de especialización). Incluyen chip de dominio con punto de estado, tags y link externo.
-- Secciones numeradas con eyebrow mono (`01 · Enfoque` … `08 · Siguiente paso`): Enfoque, Servicios, Automatización, Software, Proceso, Diferencial, FAQ, CTA.
+- **Nueva sección "03 · Meta Tech Provider" (2026-11-15)**: declara el respaldo técnico de Meta, con 3 tarjetas (integraciones oficiales, verificación con criterio técnico, soporte por canal técnico) y una comparativa en dos columnas: "Con Visión Digital" vs "Una agencia sin respaldo técnico" (variante `.checklist--muted`). Enlace añadido al footer y `award` en el JSON-LD. No se agregó al navbar para no romper el breakpoint de 1024px.
+- Secciones numeradas con eyebrow mono (`01 · Enfoque` … `09 · Siguiente paso`): Enfoque, Servicios, Meta Tech Provider, Automatización, Software, Proceso, Diferencial, FAQ, CTA.
 - **Contenido ampliado**: nueva FAQ sobre propiedad del software y los datos; nota de entregas por etapa en el panel de desarrollo; copy revisado sin duplicados.
 - Navbar mínima sin blur (el backdrop-filter generaba una costura visible): fondo casi opaco, link activo con IntersectionObserver, CTA duplicada adaptativa (desktop fuera del menú, mobile dentro).
 - JS: barra de progreso, navbar sticky, link activo (`aria-current="location"`), menú móvil accesible (Escape, cierre al click, reset en resize), reveal con limpieza de clases y **red de seguridad** (revela lo visible a los 1.5 s), contadores animados y spotlight radial en tarjetas (solo puntero fino).
@@ -21,6 +23,7 @@ Stack: HTML + CSS + JS vanilla, sin build ni dependencias locales (Google Fonts 
 - **Lighthouse (build actual)**: Accessibility 100, Best Practices 100, SEO 100.
 
 ## Pendientes
+- **Deploy pendiente**: sección Meta Tech Provider + copy en castellano neutro + tarjeta 08 nueva (`styles.css?v=12`). Cambios verificados solo en local.
 - Verificar renderizado en dispositivos reales (iOS Safari, Android Chrome) tras el deploy.
 - Evaluar imágenes reales/portafolio y testimonios verificables (hoy no hay assets ni casos públicos).
 - Si se agrega formulario o analytics: política de privacidad y consentimiento.
@@ -40,7 +43,7 @@ Stack: HTML + CSS + JS vanilla, sin build ni dependencias locales (Google Fonts 
 
 - Checklist post-deploy:
   1. `curl -I https://visiondigital.lat/` → 200 y `content-type: text/html`.
-  2. Verificar que el HTML servido referencia `css/styles.css?v=11` y `js/main.js?v=6`.
+  2. Verificar que el HTML servido referencia `css/styles.css?v=12` y `js/main.js?v=6`.
   3. Revisar consola del navegador sin errores y que el hero muestre el panel de consola.
   4. Revisar que `https://visiondigital.lat/robots.txt` y `/sitemap.xml` respondan 200.
   5. En GitHub → Settings → Pages: dominio verificado y certificado TLS activo (Enforce HTTPS).
@@ -54,14 +57,15 @@ Stack: HTML + CSS + JS vanilla, sin build ni dependencias locales (Google Fonts 
 - Hero en 2 columnas con título a 56px máx.: a 65px la frase "Marketing que vende." no cabía y el titular quedaba en 4 líneas.
 - Breakpoint del menú móvil en 1024px (6 links + CTA no caben en tablets/laptops chicas).
 - Ubicación pública: solo "Bolivia" (sin Oruro).
-- Voseo consistente ("agendá", "escribinos").
+- Castellano neutro latinoamericano: segunda persona con tuteo ("tú"), sin voseo ni modismos rioplatenses.
+- Tarjeta 08 = Verificación de Portafolio Comercial en Meta (reemplaza Talleres de IA, que no tenía demanda comprobada y competía con el resto de la oferta).
 - Contacto solo por WhatsApp, con un único número oficial: **+591 77655674**. Sin backend.
 - Stats: +40 empresas, 3 años, 95% satisfacción, 7 departamentos.
 - El contenido se oculta solo si hay JS activo; `<noscript>` fuerza la visibilidad.
 
 ## Archivos
 - `index.html` — estructura reescrita (hero + consola, bento de servicios, secciones numeradas, FAQ ampliada, footer de 4 columnas).
-- `css/styles.css` — reescrito completo, tema oscuro futurista (`?v=10`).
+- `css/styles.css` — reescrito completo, tema oscuro futurista (`?v=12`; se agregó `.checklist--muted`).
 - `js/main.js` — reescrito (spotlight, IO para link activo, reveal con fallback, contadores) (`?v=6`).
 - `robots.txt` — nuevo.
 - `sitemap.xml` — nuevo.

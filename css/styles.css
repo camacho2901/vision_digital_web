@@ -1016,6 +1016,12 @@ body.menu-open { overflow: hidden; }
   border-radius: 6px;
   margin-top: 4px;
 }
+.checklist--muted li { color: var(--ink-dim); }
+.checklist--muted i {
+  color: var(--ink-dim);
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid var(--line);
+}
 
 .tech-strip {
   list-style: none;
