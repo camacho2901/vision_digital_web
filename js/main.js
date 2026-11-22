@@ -260,6 +260,27 @@
   var yearEl = document.getElementById('year');
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
+  /* Calculadora de inversión */
+  var calcBudget = document.getElementById('calcBudget');
+  var calcCpa = document.getElementById('calcCpa');
+  var calcLeads = document.getElementById('calcLeads');
+  var calcDaily = document.getElementById('calcDaily');
+
+  function updateCalc() {
+    if (!calcBudget || !calcCpa || !calcLeads || !calcDaily) return;
+    var budget = parseFloat(calcBudget.value) || 0;
+    var cpa = parseFloat(calcCpa.value) || 0;
+    var leads = cpa > 0 ? budget / cpa : 0;
+    calcLeads.textContent = Math.max(0, Math.round(leads)).toLocaleString('es-BO');
+    calcDaily.textContent = Math.max(0, Math.round(budget / 30)).toLocaleString('es-BO');
+  }
+
+  if (calcBudget && calcCpa) {
+    calcBudget.addEventListener('input', updateCalc);
+    calcCpa.addEventListener('input', updateCalc);
+    updateCalc();
+  }
+
   handleNavScroll();
   updateProgressBar();
 })();

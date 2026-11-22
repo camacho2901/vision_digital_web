@@ -22,7 +22,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="css/styles.css?v=13">
+    <link rel="stylesheet" href="css/styles.css?v=14">
   <noscript>
     <style>
       .reveal, .reveal-left, .reveal-right, .reveal-scale { opacity: 1; transform: none; filter: none; }
@@ -543,9 +543,40 @@
           <a href="https://ads.visiondigital.lat" class="btn btn-primary">
             Entrar a la plataforma <i class="fas fa-arrow-right" aria-hidden="true"></i>
           </a>
-          <a href="https://wa.me/59177655674?text=Hola%2C%20quiero%20acceso%20a%20ads.visiondigital.lat" target="_blank" rel="noopener" class="btn btn-ghost">
-            Solicitar acceso
+          <a href="https://ads.visiondigital.lat/audit" class="btn btn-ghost">
+            Auditar mis campañas gratis
           </a>
+          <a href="https://ads.visiondigital.lat/demo" class="btn btn-ghost">
+            Ver demo
+          </a>
+        </div>
+
+        <div class="calc reveal" id="calculadora">
+          <div class="calc-copy">
+            <p class="eyebrow">Calculadora</p>
+            <h3>¿Cuántos resultados puede darte tu presupuesto?</h3>
+            <p>Estimación rápida con tu costo por resultado actual. No reemplaza un diagnóstico real, pero ordena la conversación.</p>
+          </div>
+          <div class="calc-form">
+            <label>
+              Presupuesto mensual (USD)
+              <input type="number" id="calcBudget" min="0" step="50" value="1000" inputmode="decimal" />
+            </label>
+            <label>
+              Costo por resultado (USD)
+              <input type="number" id="calcCpa" min="1" step="0.5" value="8" inputmode="decimal" />
+            </label>
+            <div class="calc-out">
+              <div>
+                <span>Resultados estimados</span>
+                <strong id="calcLeads">125</strong>
+              </div>
+              <div>
+                <span>Inversión diaria</span>
+                <strong id="calcDaily">33</strong>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -927,6 +958,6 @@
     <i class="fab fa-whatsapp" aria-hidden="true"></i>
   </a>
 
-  <script src="js/main.js?v=6"></script>
+  <script src="js/main.js?v=7"></script>
 </body>
 </html>

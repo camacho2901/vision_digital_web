@@ -1497,3 +1497,44 @@ body.menu-open { overflow: hidden; }
   }
   .marquee-track, .status-dot, .console-live { animation: none; }
 }
+
+/* --- Calculadora de inversión --- */
+.calc {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 28px;
+  align-items: center;
+  margin-top: 34px;
+  padding: 28px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, .02);
+}
+.calc-copy h3 { margin: 10px 0 8px; font-size: 1.25rem; }
+.calc-copy p { color: var(--ink-soft); font-size: .92rem; line-height: 1.6; margin: 0; }
+.calc-form { display: grid; gap: 14px; }
+.calc-form label {
+  display: grid;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: .72rem;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+}
+.calc-form input {
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  padding: 11px 13px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, .03);
+  color: var(--ink);
+}
+.calc-form input:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.calc-out { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 4px; }
+.calc-out span { display: block; font-size: .7rem; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-dim); }
+.calc-out strong { display: block; font-family: var(--font-mono); font-size: 1.6rem; margin-top: 4px; color: var(--ink); }
+@media (max-width: 900px) {
+  .calc { grid-template-columns: 1fr; gap: 20px; padding: 22px; }
+}
