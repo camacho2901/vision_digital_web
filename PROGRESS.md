@@ -1,8 +1,15 @@
 # PROGRESS — Visión Digital (web)
 
 Landing page estática de Visión Digital (agencia de marketing digital e IA, Latinoamérica).
-Hosting: GitHub Pages con dominio `visiondigital.lat` (CNAME).
+Hosting: **servidor propio** (Contabo `82.197.67.81`) servida por Caddy en `/opt/apps/visiondigital/landing`. GitHub Pages quedó desactivado el 2026-11-22.
 Stack: HTML + CSS + JS vanilla, sin build ni dependencias locales (Google Fonts y Font Awesome vía CDN).
+
+## Cambios 2026-11-22 (migración de hosting)
+- Se agregó el apartado **`#plataforma`** ("05 · Ads."), entre Automatización y Software: 3 tarjetas (resultados, reportes, acceso privado), métricas y CTA "Entrar a la plataforma" → `https://ads.visiondigital.lat`.
+- Link "Ads." en el navbar y en el footer; secciones renumeradas 01–10.
+- Tarjeta **Vision Digital Ads** en "Nuestros desarrollos" (primera del grid); `.projects-grid` pasó a `repeat(auto-fit, minmax(300px, 1fr))` para 3 tarjetas.
+- CSS subido a `styles.css?v=13`.
+- Deploy actual = copiar `index.html` y `css/styles.css` a `/opt/apps/visiondigital/landing` por `scp`.
 
 ## Estado actual
 - **Rediseño v3 (2026-11-15) — estética futurista minimalista, tema oscuro.** Reemplaza por completo el tema claro v2.
